@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite the manuscript."
+title: "A Centered Volterra--Fredholm Realization of the Riemann Xi-Function"
+type: manuscript
+authors:
+  - family-names: Liu
+    given-names: Jingwei
+date-released: 2026-08-28
+repository-code: "https://github.com/AlexxxxxLiu/btheta-volterra-fredholm"

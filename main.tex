@@ -1,0 +1,1356 @@
+\documentclass[11pt,reqno]{amsart}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{mathrsfs}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=green!40!black,
+  urlcolor=blue!60!black,
+  pdftitle={A Centered Volterra--Fredholm Realization of the Riemann Xi-Function},
+  pdfauthor={Jingwei Liu},
+  pdfsubject={Regularized Fredholm determinant and operator realization of the Riemann Xi-function},
+  pdfkeywords={Riemann Xi function, Fredholm determinant, Volterra operator, Hilbert-Schmidt operator, Moore-Penrose inverse, PT symmetry}]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\allowdisplaybreaks
+\numberwithin{equation}{section}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{problem}[theorem]{Problem}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\HS}{\mathcal S_2}
+\newcommand{\BTheta}{\mathcal B_{\Theta}}
+\newcommand{\Vp}{\mathfrak V_p}
+\newcommand{\Dom}{\operatorname{Dom}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\Ker}{\operatorname{Ker}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\detTwo}{\det\nolimits_{2}}
+
+\title[A centered Volterra realization of the Riemann $\Xi$-function]
+{A Centered Volterra--Fredholm Realization\\
+of the Riemann $\Xi$-Function}
+
+\author{Jingwei Liu}
+\date{August 28, 2026}
+
+\subjclass[2020]{Primary 47G10, 47B10; Secondary 11M26, 47A10, 60E10,
+81Q60}
+\keywords{Riemann Xi function, regularized Fredholm determinant,
+Volterra operator, Hilbert--Schmidt operator, Moore--Penrose inverse,
+PT symmetry, supersymmetric quantum mechanics, pseudo-Hermitian operator}
+
+\begin{document}
+\raggedbottom
+
+\begin{abstract}
+Within the Hilbert--Polya program, we construct a compact integral realization
+of the completed zeta function directly from its positive Theta kernel, while
+separating this realization from the still-open problem of spectral reality.
+Set $\Xi(z)=\xi(\tfrac12+iz)$, and let $W$ be the positive, even Theta density
+whose Fourier transform is $\Xi$.  After normalizing
+$p=W/\Xi(0)$ and writing $F(x)=\int_{-\infty}^x p(y)\dd y$, we introduce on
+$L^2(\R)$ the centered Volterra operator
+\[
+ (\BTheta f)(x)=\frac{i}{\sqrt{p(x)}}\left(
+ \int_{-\infty}^x\sqrt{p(y)}f(y)\dd y
+ -F(x)\int_{\R}\sqrt{p(y)}f(y)\dd y\right).
+\]
+We prove that $\BTheta$ is Hilbert--Schmidt, obtain an explicit norm bound,
+and establish the regularized determinant identity
+\[
+ \detTwo(I+z\BTheta)=\frac{\Xi(z)}{\Xi(0)},\qquad z\in\C.
+\]
+Within the natural class of scalar rank-one endpoint corrections, the CDF
+term is uniquely forced by requiring differentiation to remove exactly the
+$\sqrt p$ mode.  Thus the construction is canonical for the underlying
+probability law rather than an ad hoc determinant reduction.
+Consequently the nonzero spectrum of $\BTheta$ consists, with algebraic
+multiplicity, of the reciprocal negatives of the zeros of $\Xi$.  We also
+construct a closed first-order operator
+$A=p^{-1/2}(-i\,d/dx)p^{1/2}$ and prove directly that
+$\BTheta=A^\dagger$, its Moore--Penrose inverse.  The associated block
+supercharge gives a one-dimensional Witten-type factorization, and $A$ is
+Fredholm of index $-1$.  For an even probability density, $A$ and
+$\BTheta$ are PT-symmetric and parity-odd.  The determinant formula is first
+proved for an arbitrary density on a finite interval and is then extended to
+an explicit class of whole-line densities by Hilbert--Schmidt convergence.
+This yields, in particular, trace--cumulant identities for the associated
+operators.  The construction is unconditional; it does not prove the Riemann
+hypothesis.  Rather, the hypothesis becomes the precise additional assertion
+that the nonzero spectrum of this concrete compact PT-symmetric operator is
+real.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+Write
+\begin{equation}\label{eq:xi-def}
+ \xi(s)=\frac12s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s),
+ \qquad
+ \Xi(z)=\xi\!\left(\frac12+iz\right).
+\end{equation}
+The Riemann hypothesis (RH) is equivalent to the assertion that every zero of
+the even entire function $\Xi$ is real.  A traditional Hilbert--Polya program
+therefore asks for an operator whose spectral points are the zeros of $\Xi$
+and whose reality follows from self-adjointness.  Connes's noncommutative
+geometric realization \cite{Connes1999} is a foundational example of a
+broader spectral interpretation: the critical zeros occur as an absorption
+spectrum for the idele-class action on the noncommutative space of Adele
+classes, while the explicit formulas are interpreted through a trace formula.
+Recent work of Hedenmalm
+\cite{Hedenmalm2026} gives a Theta-based boundary-value formulation of the
+zeros, including complex zeros, and isolates the search for a suitable inner
+product.  The present paper takes a different but compatible step: it turns
+the same positive Theta density into an explicit compact integral operator and
+computes its regularized Fredholm determinant exactly.
+
+Our main object is not obtained from a table of zeros.  It is constructed
+directly from the classical Riemann Fourier kernel.  Let $p$ be the normalized
+kernel, let $F$ be its cumulative distribution function, and define
+\begin{equation}\label{eq:B-intro}
+ (\BTheta f)(x)=\frac{i}{\sqrt{p(x)}}
+ \left[\int_{-\infty}^x\sqrt{p(y)}f(y)\dd y
+ -F(x)\int_{\R}\sqrt{p(y)}f(y)\dd y\right].
+\end{equation}
+The first term records the ordered Volterra history $y\leq x$.  The rank-one
+second term is forced by the two endpoint conditions: it removes precisely the
+outgoing scalar left by the first term.  More strongly,
+Proposition~\ref{prop:CDF-uniqueness} shows that $F$ is the unique scalar correction for
+which differentiation of the ordered primitive returns the orthogonal
+projection off the $\sqrt p$ mode.  Thus CDF centering is not selected merely
+to make a determinant calculation close: it is forced by a local
+projection-and-endpoint principle.
+
+It is useful to distinguish this construction from two more immediate
+realizations of a characteristic function.  If $M_x$ denotes multiplication
+by the coordinate on $L^2(\R)$, then every probability density has the unitary
+matrix-coefficient representation
+\begin{equation}\label{eq:matrix-coefficient}
+ \varphi_p(z)=
+ \left\langle e^{izM_x}\sqrt p,\sqrt p\right\rangle.
+\end{equation}
+Although canonical, \eqref{eq:matrix-coefficient} does not turn the zeros of
+$\varphi_p$ into spectral points of a single compact operator.  At the other
+extreme, a diagonal or canonical-product model assembled from a prescribed
+zero set has the desired zeros by construction but uses precisely the data one
+wants to explain.  The probability-CDF centering takes neither route: both the
+Volterra part and its rank-one correction are determined by $p$ before any
+zero is known, while the modified Fredholm determinant of the resulting one
+operator recovers the complete centered characteristic function.  The CDF
+term also retains the endpoint datum that a bare Volterra operator loses.
+
+General semiseparable determinant theory supplies a broad reduction framework
+for kernels of this type \cite{GesztesyMakarov2003}.  What is specific here is
+the probability normalization that makes the scalar reduction close exactly
+on a characteristic function, together with a whole-line Schatten criterion
+that can be verified with explicit constants for the Riemann--Theta density.
+Compared with the Theta boundary formulation in \cite{Hedenmalm2026}, the
+present operator is bounded and compact, is constructed without selecting a
+zero, and records the entire zero divisor and its algebraic multiplicities in
+one regularized determinant.  These are complementary features rather than a
+claim that one framework subsumes the other.
+
+Two further distinctions locate the construction more precisely.  Connes's
+spectral side is global and representation-theoretic: it is built from the
+idele-class action on the Adele-class space, critical zeros are missing
+spectral lines, and possible noncritical zeros enter as resonances
+\cite{Connes1999}.  No Adele space, group representation, or arithmetic trace
+formula is used here; the operator in \eqref{eq:B-intro} is a compact operator
+on $L^2(\R)$ obtained directly from a positive probability density.  Suzuki
+\cite{Suzuki2020}, in a different integral-operator approach, studies the
+Hankel-type family $\mathsf K_{\zeta}^{\omega,\nu}[t]$ on
+$L^2(-\infty,t)$.  Its kernel is defined through a shifted ratio of completed
+zeta functions, and the quotient
+\[
+ \frac{\det(I+\mathsf K_{\zeta}^{\omega,\nu}[t])}
+      {\det(I-\mathsf K_{\zeta}^{\omega,\nu}[t])}
+\]
+enters a de Branges Hamiltonian obtained from associated integral equations.
+By contrast, the present construction uses neither de Branges spaces nor the
+parameters $(\omega,\nu,t)$: a single fixed Hilbert--Schmidt operator
+$\BTheta$ is determined by the classical Theta density before any zero is
+chosen, and its one modified determinant is directly
+$\Xi(z)/\Xi(0)$.  Thus the common Fredholm vocabulary conceals different
+operator data, determinant identities, and spectral objectives.
+
+The principal results are as follows.
+\begin{enumerate}[label=(\roman*),leftmargin=2.3em]
+ \item For a positive density on a finite interval, the CDF is the unique
+ rank-one scalar centering compatible with the local projection principle,
+ and the regularized determinant of the resulting operator is the
+ characteristic function with its linear phase removed; see
+ Proposition~\ref{prop:CDF-uniqueness} and
+ Theorem~\ref{thm:finite-det}.
+ \item A transparent whole-line admissibility condition gives
+ Hilbert--Schmidt convergence of symmetric truncations and hence the same
+ determinant formula on $\R$; see \cref{thm:whole-line-det}.
+ \item The Riemann--Theta density satisfies these assumptions.  Explicit
+ first-mode estimates give
+ \begin{equation}\label{eq:intro-hs-bound}
+  \|\BTheta\|_{\HS}^2
+  \leq \frac{1+\Delta}{\pi d_*}<\infty,
+ \end{equation}
+ where $\Delta$ and $d_*$ are given in \cref{eq:Delta-def,eq:dstar-def}.
+ \item The resulting determinant is exactly
+ \begin{equation}\label{eq:intro-main-det}
+  \detTwo(I+z\BTheta)=\frac{\Xi(z)}{\Xi(0)}.
+ \end{equation}
+ Thus the zero divisor, including algebraic multiplicities, is realized by a
+ single compact operator.
+ \item The same integral kernel is the Moore--Penrose inverse of a natural
+ closed first-order Theta operator.  This gives exact inverse identities and
+ an explicit positive lower bound without using the invalid implication
+ ``injective implies bounded below.''  The first-order factor has a
+ Witten-type supersymmetric completion and Fredholm index $-1$.
+\end{enumerate}
+
+Up to an overall phase and interchange of the two partner sectors, the
+first-order factor is the one-dimensional Witten differential associated
+with the logarithmic potential $\Phi=-\log p$ \cite{Witten1982}.  The
+PT symmetry of the compact inverse belongs to the non-Hermitian framework
+initiated in \cite{BenderBoettcher1998}, while the possible metric
+intertwining equation is naturally read in the pseudo-Hermitian framework of
+\cite{Mostafazadeh2002,Mostafazadeh2002III}.  These connections sharpen the
+spectral question but do not supply spectral reality.
+
+The logical boundary is important.  Equation \eqref{eq:intro-main-det} is an
+operator realization of the full zero divisor, not a proof that the divisor
+is real.  In fact,
+\[
+ \mathrm{RH}
+ \quad\Longleftrightarrow\quad
+ \Spec(\BTheta)\setminus\{0\}\subset\R.
+\]
+PT symmetry supplies the expected quartet symmetry, but PT-symmetric compact
+operators need not have real spectrum.  The missing step is therefore a
+specific spectral-reality theorem for the arithmetic kernel, not a domain
+closure, determinant normalization, or numerical approximation.
+
+The determinant and trace-ideal facts used below are standard; our conventions
+follow Simon \cite{Simon2005}.  Accordingly, the finite-interval calculation
+in \cref{thm:finite-det} is presented as a self-contained scalar
+specialization, not as a claim that rank-one Volterra determinant reduction is
+new.  The contribution here is the probability-CDF centering, the explicit
+full-line Schatten closure for the Riemann density, its Moore--Penrose
+interpretation, and the exact specialization to $\Xi$.  Standard properties
+of $\xi$ and its Fourier kernel may be found in Titchmarsh's account
+\cite{Titchmarsh1986}.
+
+\section{The positive Riemann--Theta density}
+
+For $x\geq0$, set
+\begin{equation}\label{eq:W-def}
+ W(x)=2\sum_{n=1}^{\infty}
+ \left(2\pi^2n^4e^{9x/2}-3\pi n^2e^{5x/2}\right)
+ e^{-\pi n^2e^{2x}},
+ \qquad W(-x)=W(x).
+\end{equation}
+The Jacobi transformation law shows that this even extension is smooth.  It
+is the logarithmic form of the classical Theta density appearing in the
+Mellin representation of $\xi$.  For completeness, a derivation from the
+classical Jacobi inversion and Mellin formulas, independent of any recent
+Theta-based spectral construction, is given in
+\cref{sec:appendix-kernel}; compare \cite{Titchmarsh1986}.
+
+\begin{proposition}[Riemann Fourier representation]\label{prop:fourier-xi}
+The function $W$ is strictly positive, even, smooth, and has exponential
+moments of every order.  Moreover,
+\begin{equation}\label{eq:fourier-xi}
+ \Xi(z)=\int_{\R}W(x)e^{izx}\dd x,
+ \qquad z\in\C.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:c0-def}
+ c_0:=\int_{\R}W(x)\dd x=\Xi(0)>0.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The complete calculation is recorded in \cref{sec:appendix-kernel}.  In
+brief, if $\vartheta(t)=\sum_{n\in\mathbb Z}e^{-\pi n^2t}$ and
+\[
+ \omega(t)=\frac12\bigl(2t^2\vartheta''(t)+3t\vartheta'(t)\bigr),
+\]
+then Jacobi inversion gives
+$\omega(1/t)=t^{1/2}\omega(t)$, and
+$W(x)=2e^{x/2}\omega(e^{2x})$.  This identity proves smoothness and evenness
+without gluing two half-line formulas.  The series is positive for $x\geq0$
+because $2\pi n^2e^{2x}-3>0$, hence it is positive everywhere by evenness,
+and it has double-exponential decay.  Two integrations by parts in the
+classical Mellin formula give
+\[
+ \xi(s)=\int_0^\infty\omega(t)t^{s/2}\frac{\dd t}{t}.
+\]
+The substitution $t=e^{2x}$ at $s=\tfrac12+iz$ is exactly
+\eqref{eq:fourier-xi}.  Double-exponential decay gives absolute convergence
+locally uniformly in $z\in\C$.
+\end{proof}
+
+Henceforth put
+\begin{equation}\label{eq:pF-def}
+ p(x)=\frac{W(x)}{c_0},
+ \qquad
+ F(x)=\int_{-\infty}^xp(y)\dd y.
+\end{equation}
+Then $p$ is an even, strictly positive probability density, $F(-x)=1-F(x)$,
+and
+\begin{equation}\label{eq:char-xi}
+ \varphi_p(z):=\int_{\R}p(x)e^{izx}\dd x
+ =\frac{\Xi(z)}{\Xi(0)}.
+\end{equation}
+
+\section{The finite-interval determinant identity}
+
+We first isolate the operator-theoretic mechanism from the arithmetic
+specialization.  Throughout, Hilbert-space inner products are linear in the
+first variable.  For vectors $u,v$, the notation $u\otimes v$ means
+$(u\otimes v)f=\langle f,v\rangle u$.
+
+Let $-\infty<a<b<\infty$, and let $p$ be a probability density on $[a,b]$
+that is bounded above and bounded away from zero.  Define
+\begin{equation}\label{eq:finite-Fmu}
+ F(x)=\int_a^xp(y)\dd y,
+ \qquad
+ \mu=\int_a^b xp(x)\dd x.
+\end{equation}
+
+\begin{definition}[Centered Volterra operator]\label{def:centered-volterra}
+The centered Volterra operator associated with $p$ is
+\begin{equation}\label{eq:finite-B}
+ (\Vp f)(x)=\frac{i}{\sqrt{p(x)}}\left[
+ \int_a^x\sqrt{p(y)}f(y)\dd y
+ -F(x)\int_a^b\sqrt{p(y)}f(y)\dd y\right].
+\end{equation}
+\end{definition}
+
+The particular correction $F$ in \eqref{eq:finite-B} is canonical within a
+natural class.  Put $P_p=I-\sqrt p\otimes\sqrt p$.  For an absolutely
+continuous function $h$ with $h(a)=0$, define
+\begin{equation}\label{eq:Bh-def}
+ (\mathcal B_{p,h}f)(x)=\frac{i}{\sqrt{p(x)}}\left[
+ \int_a^x\sqrt{p(y)}f(y)\dd y
+ -h(x)\int_a^b\sqrt{p(y)}f(y)\dd y\right].
+\end{equation}
+
+\begin{proposition}[Uniqueness of CDF centering]\label{prop:CDF-uniqueness}
+The local projection identity
+\begin{equation}\label{eq:CDF-local-projection}
+ \frac{d}{dx}\left(\frac{\sqrt p\,\mathcal B_{p,h}f}{i}\right)
+ =\sqrt p\,P_pf
+ \qquad\text{for every }f\in L^2([a,b])
+\end{equation}
+holds in the weak sense if and only if $h=F$.  For this unique choice, the
+bracket in \eqref{eq:Bh-def} vanishes at both $a$ and $b$ for every $f$.
+\end{proposition}
+
+\begin{proof}
+Writing $m_f=\langle f,\sqrt p\rangle$, the two sides of
+\eqref{eq:CDF-local-projection} are respectively
+\[
+ \sqrt p\,f-h'm_f
+ \qquad\text{and}\qquad
+ \sqrt p\,f-pm_f.
+\]
+Taking $f=\sqrt p$ shows that the identity holds for every $f$ only if
+$h'=p$ almost everywhere.  Since $h(a)=0$, this is equivalent to $h=F$;
+the converse is immediate.  Finally, $F(a)=0$ and $F(b)=1$, so the bracket
+vanishes at both endpoints.
+\end{proof}
+
+The operator $\Vp$ in Definition~\ref{def:centered-volterra} is
+Hilbert--Schmidt.
+Conjugation by multiplication with $\sqrt p$ turns it into
+\begin{equation}\label{eq:C-similar}
+ C=i(\mathcal V-F\otimes\1),
+ \qquad
+ (\mathcal V f)(x)=\int_a^xf(y)\dd y,
+\end{equation}
+on $L^2([a,b])$.  The multiplication operators are bounded and boundedly
+invertible, so the regularized determinant is unchanged by this similarity.
+
+For $K\in\HS$, we use
+\begin{equation}\label{eq:det2-def}
+ \detTwo(I+K)=\det\bigl((I+K)e^{-K}\bigr).
+\end{equation}
+It is an entire function of scalar multiples of $K$ and is continuous in the
+Hilbert--Schmidt norm \cite[Chapter 9]{Simon2005}.  We use the standard
+Hilbert--Schmidt product formula in the form recorded, for example, in
+\cite{BritzEtAl2021}.
+
+\begin{theorem}[Finite centered-Volterra determinant]\label{thm:finite-det}
+For every $z\in\C$,
+\begin{equation}\label{eq:finite-det}
+ \boxed{
+ \detTwo(I+z\Vp)
+ =e^{-i\mu z}\int_a^bp(x)e^{izx}\dd x.}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The Volterra operator $\mathcal V$ is Hilbert--Schmidt and quasinilpotent;
+hence
+\begin{equation}\label{eq:volterra-det2-one}
+ \detTwo(I+iz\mathcal V)=1.
+\end{equation}
+Put
+\[
+ Q=(I+iz\mathcal V)^{-1}F.
+\]
+Since $\mathcal V$ commutes with its resolvent, the factorization
+\begin{equation}\label{eq:finite-factor}
+ I+zC=(I+iz\mathcal V)(I-izQ\otimes\1)
+\end{equation}
+holds.  The multiplicative formula for $\detTwo$ gives
+\begin{equation}\label{eq:det-step1}
+\begin{aligned}
+ \detTwo(I+zC)
+ &=\biggl(1-iz\int_a^bQ(x)\dd x\biggr)
+ \exp\biggl(
+ iz\int_a^bQ(x)\dd x\\
+ &\hspace{8em}
+ -z^2\int_a^b(\mathcal VQ)(x)\dd x\biggr).
+\end{aligned}
+\end{equation}
+The resolvent identity $(I+iz\mathcal V)Q=F$ shows that the exponent in
+\eqref{eq:det-step1} is $iz\int_a^bF$.
+
+For the scalar factor, set
+\[
+ q=(I+iz\mathcal V)^{-1}p.
+\]
+Because $F=\mathcal Vp$, one has $Q=\mathcal Vq$.  Therefore
+\begin{equation}\label{eq:bracket-Qb}
+ 1-iz\int_a^bQ=\int_a^bq=Q(b).
+\end{equation}
+The function $Q$ satisfies the initial-value problem
+\begin{equation}\label{eq:Q-ode}
+ Q'(x)+izQ(x)=p(x),
+ \qquad Q(a)=0,
+\end{equation}
+and consequently
+\begin{equation}\label{eq:Qb-fourier}
+ Q(b)=e^{-izb}\int_a^bp(x)e^{izx}\dd x.
+\end{equation}
+Finally, Fubini's theorem gives
+\begin{equation}\label{eq:intF}
+ \int_a^bF(x)\dd x
+ =\int_a^b(b-y)p(y)\dd y=b-\mu.
+\end{equation}
+Combining \eqref{eq:det-step1}--\eqref{eq:intF} proves
+\eqref{eq:finite-det}.  Similarity in \eqref{eq:C-similar} returns the result
+to $\Vp$.
+\end{proof}
+
+\begin{corollary}[Finite trace--cumulant identity]\label{cor:finite-cumulant}
+Let $\kappa_n(p)$ be the cumulants of $p$.  For every $n\geq2$,
+\begin{equation}\label{eq:finite-cumulant}
+ \tr(\Vp^n)
+ =\frac{(-1)^{n+1}i^n}{(n-1)!}\,\kappa_n(p).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Near $z=0$, compare
+\[
+ \log\detTwo(I+z\Vp)
+ =\sum_{n=2}^{\infty}
+ \frac{(-1)^{n+1}}{n}z^n\tr(\Vp^n)
+\]
+with the cumulant expansion of
+$e^{-i\mu z}\int p(x)e^{izx}\dd x$.
+\end{proof}
+
+\section{Whole-line admissibility and closure}
+
+The finite-interval formula does not pass automatically to $\R$: the
+centered Volterra kernel may fail to be Hilbert--Schmidt, even for familiar
+density functions.  We now state a directly checkable class for which the
+passage is valid.
+
+Let $p$ be a strictly positive, continuous, even probability density on
+$\R$, and let $F(x)=\int_{-\infty}^xp$.  Define formally
+\begin{equation}\label{eq:whole-B}
+ (\Vp f)(x)=\frac{i}{\sqrt{p(x)}}\left[
+ \int_{-\infty}^x\sqrt{p(y)}f(y)\dd y
+ -F(x)\int_{\R}\sqrt{p(y)}f(y)\dd y\right].
+\end{equation}
+
+\begin{definition}[Volterra-admissible density]\label{def:admissible}
+An even density $p$ is called \emph{Volterra-admissible} if:
+\begin{enumerate}[label=(A\arabic*),leftmargin=3.1em]
+ \item\label{item:A1} $p(x)>0$ for all $x$ and
+ $\int_{\R}p(x)e^{M|x|}\dd x<\infty$ for every $M>0$;
+ \item\label{item:A2}
+ \begin{equation}\label{eq:admissible-HS}
+  I_p:=\int_{\R}\frac{F(x)(1-F(x))}{p(x)}\dd x<\infty;
+ \end{equation}
+ \item\label{item:A3} if
+ $q_R=\int_R^\infty p(x)\dd x$, then
+ \begin{equation}\label{eq:admissible-defect}
+  \frac{q_R^2}{1-2q_R}
+  \int_{-R}^R\frac{(2F(x)-1)^2}{p(x)}\dd x
+  \longrightarrow0.
+ \end{equation}
+\end{enumerate}
+\end{definition}
+
+The terminology is local to this paper.  Condition \eqref{eq:admissible-HS}
+is exactly the Hilbert--Schmidt requirement; condition
+\eqref{eq:admissible-defect} controls the normalization error created by
+symmetric truncation.
+
+\begin{proposition}[Exact Hilbert--Schmidt norm]\label{prop:HS-identity}
+If \eqref{eq:admissible-HS} holds, then \eqref{eq:whole-B} defines an operator
+in $\HS(L^2(\R))$ with kernel
+\begin{equation}\label{eq:whole-kernel}
+ b_p(x,y)=i\sqrt{\frac{p(y)}{p(x)}}
+ \bigl(\1_{\{y\leq x\}}-F(x)\bigr)
+\end{equation}
+and
+\begin{equation}\label{eq:HS-exact}
+ \boxed{\|\Vp\|_{\HS}^2
+ =\int_{\R}\frac{F(x)(1-F(x))}{p(x)}\dd x.}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Tonelli's theorem applies to $|b_p|^2$.  For fixed $x$,
+\begin{align*}
+ \int_{\R}|b_p(x,y)|^2\dd y
+ &=\frac{1}{p(x)}\left[(1-F(x))^2
+ \int_{-\infty}^xp(y)\dd y
+ +F(x)^2\int_x^\infty p(y)\dd y\right]\\
+ &=\frac{F(x)(1-F(x))}{p(x)}.
+\end{align*}
+Integrating the preceding identity over all $x\in\R$ gives
+\eqref{eq:HS-exact} and proves the claim.
+\end{proof}
+
+For $R>0$, define
+\begin{equation}\label{eq:pR-def}
+ p_R(x)=\frac{p(x)\1_{[-R,R]}(x)}{1-2q_R},
+ \qquad
+ F_R(x)=\int_{-R}^xp_R(y)\dd y,
+\end{equation}
+and let $\Vp^{(R)}$ be the finite-interval operator, extended by zero to
+$L^2(\R)$.
+
+\begin{proposition}[Hilbert--Schmidt truncation]\label{prop:HS-truncation}
+If $p$ is Volterra-admissible, then
+\begin{equation}\label{eq:HS-truncation}
+ \|\Vp^{(R)}-\Vp\|_{\HS}\longrightarrow0.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+On $[-R,R]$ one has the exact identity
+\begin{equation}\label{eq:FR-F}
+ F_R(x)-F(x)=\frac{q_R(2F(x)-1)}{1-2q_R}.
+\end{equation}
+The normalization in $p_R$ cancels from the ratio
+$\sqrt{p_R(y)/p_R(x)}$.  Therefore the squared kernel error on
+$[-R,R]^2$ is exactly
+\begin{equation}\label{eq:interior-error}
+ E_R^{\mathrm{in}}
+ =\frac{q_R^2}{1-2q_R}
+ \int_{-R}^R\frac{(2F(x)-1)^2}{p(x)}\dd x,
+\end{equation}
+which tends to zero by \eqref{eq:admissible-defect}.  On the complement of
+the square, the truncated kernel vanishes.  The remaining error is the
+integral of $|b_p|^2$ over a decreasing family of sets with empty intersection;
+it tends to zero by \cref{prop:HS-identity} and continuity from above.
+\end{proof}
+
+\begin{theorem}[Whole-line determinant]\label{thm:whole-line-det}
+If $p$ is Volterra-admissible, then
+\begin{equation}\label{eq:whole-line-det}
+ \boxed{
+ \detTwo(I+z\Vp)=\int_{\R}p(x)e^{izx}\dd x,
+ \qquad z\in\C.}
+\end{equation}
+The convergence of the finite determinants to both sides is locally uniform
+on $\C$.
+\end{theorem}
+
+\begin{proof}
+Each $p_R$ is even, so its mean is zero.  By \cref{thm:finite-det},
+\[
+ \detTwo(I+z\Vp^{(R)})
+ =\int_{-R}^Rp_R(x)e^{izx}\dd x.
+\]
+The left side converges locally uniformly by
+\cref{prop:HS-truncation} and continuity estimates for $\detTwo$ on $\HS$.
+For $|\operatorname{Im}z|\leq M$, the right side converges uniformly by
+condition \ref{item:A1}, normalization of $p_R$, and dominated convergence.
+The two limits agree.
+\end{proof}
+
+\begin{remark}[Nonzero mean]\label{rem:nonzero-mean}
+For a non-even density of mean $\mu$, the same argument, with two-sided
+truncation defects written separately, gives
+\[
+ \detTwo(I+z\Vp)=e^{-i\mu z}\varphi_p(z).
+\]
+Thus the regularization removes exactly the first cumulant.
+\end{remark}
+
+\begin{example}\label{ex:supergaussian}
+The densities $p_r(x)=c_r e^{-|x|^r}$ are Volterra-admissible for $r>2$.
+Indeed, their tail-to-density ratio is $O(x^{1-r})$, which is integrable
+precisely beyond the Gaussian exponent.  At $r=2$, the Gaussian density fails
+\eqref{eq:admissible-HS}: Mills' ratio gives
+$F(x)(1-F(x))/p(x)\sim(2x)^{-1}$ as $x\to+\infty$.  Hence whole-line
+Hilbert--Schmidt closure is a genuine restriction, not a formal consequence
+of rapid decay.
+\end{example}
+
+\begin{remark}[The reciprocal log-slope test]\label{rem:log-slope}
+The Gaussian obstruction is not a lack of moments: the Gaussian has
+exponential moments of every order.  The obstruction comes from the
+$p^{-1/2}$ normalization in the kernel.  On the positive tail,
+$F(x)\to1$, so the Hilbert--Schmidt integrand is asymptotic to
+$(1-F(x))/p(x)$.  For a smooth, eventually log-convex tail
+$p(x)=c\exp(-\Phi(x))$ satisfying $\Phi'(x)\to\infty$ and
+$\Phi''(x)/(\Phi'(x))^2\to0$, endpoint Laplace estimates give
+\begin{equation}\label{eq:log-slope-diagnostic}
+ \frac{1-F(x)}{p(x)}\sim\frac1{\Phi'(x)}.
+\end{equation}
+Thus admissibility tests the integrability of the reciprocal logarithmic
+slope, not merely rapid decay.  For $\Phi(x)=x^2$, the right side is
+$(2x)^{-1}$ and diverges logarithmically.  By contrast,
+\cref{eq:w1-def,eq:W-w1-comparison} show that the Riemann--Theta density has
+\begin{equation}\label{eq:theta-log-slope}
+ -\log p(x)=\pi e^{2x}-\frac92x+O(1),
+ \qquad x\to+\infty,
+\end{equation}
+so its reciprocal log-slope is of order $e^{-2x}$.  The rigorous version is
+the tail ratio bound \eqref{eq:tail-density-ratio}.  This double-exponential geometry
+is exactly what separates the Theta density from the Gaussian threshold.
+\end{remark}
+
+\section{Explicit Theta-tail estimates}
+
+We now verify Definition~\ref{def:admissible} for the density in
+\cref{eq:pF-def} and
+derive a fixed-constant norm bound.
+
+For $x\geq0$, put
+\begin{equation}\label{eq:q-def}
+ q=\pi e^{2x}\geq\pi
+\end{equation}
+and denote the $n=1$ summand of \eqref{eq:W-def} by
+\begin{equation}\label{eq:w1-def}
+ w_1(x)=2\pi^{-1/4}q^{5/4}(2q-3)e^{-q}.
+\end{equation}
+For $n\geq2$, the ratio of the $n$th summand to $w_1$ is
+\begin{equation}\label{eq:wn-ratio}
+ \frac{w_n(x)}{w_1(x)}
+ =n^2\frac{2qn^2-3}{2q-3}e^{-q(n^2-1)}
+ \leq2n^4e^{-q(n^2-1)}.
+\end{equation}
+Since $n^2-1\geq3(n-1)$, define
+\begin{equation}\label{eq:Delta-def}
+ r=e^{-3\pi},
+ \qquad
+ \Delta=2\left[
+ \frac{1+11r+11r^2+r^3}{(1-r)^5}-1\right].
+\end{equation}
+Summing \eqref{eq:wn-ratio} gives
+\begin{equation}\label{eq:W-w1-comparison}
+ \boxed{w_1(x)\leq W(x)\leq(1+\Delta)w_1(x),
+ \qquad x\geq0.}
+\end{equation}
+
+We use the elementary incomplete-Gamma estimate
+\begin{equation}\label{eq:incomplete-gamma}
+ \int_q^\infty t^ae^{-t}\dd t
+ \leq\frac{q^ae^{-q}}{1-a/q},
+ \qquad q>a\geq0.
+\end{equation}
+It follows from
+$t^a\leq q^a\exp(a(t-q)/q)$ for $t\geq q$.
+
+Let $T(x)=\int_x^\infty W(y)\dd y$.  The substitution
+$t=\pi e^{2y}$ yields
+\begin{equation}\label{eq:w1-tail-change}
+ \int_x^\infty w_1(y)\dd y
+ =\pi^{-1/4}\int_q^\infty
+ t^{1/4}(2t-3)e^{-t}\dd t.
+\end{equation}
+Combining \eqref{eq:W-w1-comparison}--\eqref{eq:w1-tail-change} gives
+\begin{equation}\label{eq:tail-density-ratio}
+ \frac{T(x)}{W(x)}
+ \leq\frac{1+\Delta}{(2q-3)(1-5/(4q))}
+ \leq\frac{1+\Delta}{\pi d_*}e^{-2x},
+\end{equation}
+where
+\begin{equation}\label{eq:dstar-def}
+ d_*=\left(2-\frac3\pi\right)
+ \left(1-\frac5{4\pi}\right)>0.
+\end{equation}
+
+\begin{theorem}[Theta admissibility and norm bound]\label{thm:theta-admissible}
+The density $p=W/c_0$ is Volterra-admissible.  The corresponding operator
+$\BTheta:=\Vp$ satisfies
+\begin{equation}\label{eq:theta-HS-bound}
+ \boxed{
+ \|\BTheta\|_{\HS}^2
+ \leq\frac{1+\Delta}{\pi d_*}.}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $x\geq0$, $c_0(1-F(x))=T(x)$ and $F(x)\leq1$.  By evenness and
+\eqref{eq:tail-density-ratio},
+\begin{align}
+ \|\BTheta\|_{\HS}^2
+ &=c_0\int_{\R}\frac{F(x)(1-F(x))}{W(x)}\dd x\notag\\
+ &\leq2\int_0^\infty\frac{T(x)}{W(x)}\dd x
+ \leq\frac{1+\Delta}{\pi d_*}.
+ \label{eq:theta-HS-proof}
+\end{align}
+This proves condition \ref{item:A2}.
+
+It remains to control symmetric truncation.  Put
+\begin{equation}\label{eq:QR-Cq}
+ Q_R=\pi e^{2R},
+ \qquad
+ C_q=\frac{2(1+\Delta)\pi^{-1/4}}
+ {c_0(1-5/(4\pi))}.
+\end{equation}
+Equations \eqref{eq:W-w1-comparison} and
+\eqref{eq:incomplete-gamma} imply
+\begin{equation}\label{eq:qR-bound}
+ q_R\leq C_qQ_R^{5/4}e^{-Q_R}.
+\end{equation}
+The lower bound $W\geq w_1$ gives
+\begin{equation}\label{eq:reciprocal-bound}
+ \int_{-R}^R\frac{\dd x}{p(x)}
+ \leq\frac{c_0}{2\pi^2(2\pi-3)}e^{Q_R}.
+\end{equation}
+For all sufficiently large $R$, $q_R\leq1/4$; using
+$(2F-1)^2\leq1$, the expression in
+\eqref{eq:admissible-defect} is at most
+\begin{equation}\label{eq:explicit-interior-bound}
+ \frac{C_q^2c_0}{\pi^2(2\pi-3)}
+ Q_R^{5/2}e^{-Q_R},
+\end{equation}
+which tends to zero.  This proves condition \ref{item:A3}.
+
+Finally, inserting $e^{M|x|}$ in the same calculation, with
+$a_M=5/4+M/2$ and $Q_R>a_M$, gives
+\begin{equation}\label{eq:exp-tail-bound}
+ \int_{|x|>R}p(x)e^{M|x|}\dd x
+ \leq
+ \frac{4(1+\Delta)\pi^{-1/4-M/2}}
+ {c_0(1-a_M/Q_R)}Q_R^{a_M}e^{-Q_R}.
+\end{equation}
+Thus condition \ref{item:A1} also holds.
+\end{proof}
+
+\begin{corollary}[Fredholm realization of $\Xi$]\label{cor:main-det}
+For every $z\in\C$,
+\begin{equation}\label{eq:main-det}
+ \boxed{
+ \detTwo(I+z\BTheta)=\frac{\Xi(z)}{\Xi(0)}.}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Combine \cref{eq:char-xi,thm:whole-line-det,thm:theta-admissible}.
+\end{proof}
+
+\section{A first-order operator and its Moore--Penrose inverse}
+
+The integral operator also has a differential interpretation.  Let
+\begin{equation}\label{eq:psi-P0}
+ \psi=\sqrt p,
+ \qquad
+ P_0=I-\psi\otimes\psi.
+\end{equation}
+Since $p$ is normalized, $\|\psi\|_2=1$.  Put
+\begin{equation}\label{eq:D-def}
+ D=-i\frac{d}{dx}
+\end{equation}
+and define the maximal realization
+\begin{align}
+ \Dom(A)=\{g\in L^2(\R):{}&u=\sqrt p\,g\in H^1(\R),
+ \ p^{-1/2}Du\in L^2(\R)\},\notag\\
+ Ag={}&p^{-1/2}D(\sqrt p\,g).
+ \label{eq:A-domain}
+\end{align}
+The space $C_c^\infty(\R)$ is contained in $\Dom(A)$, so $A$ is densely
+defined.
+
+\begin{proposition}\label{prop:A-closed}
+The operator $A$ is closed.  If $\Phi=-\log p$ and
+$V=\tfrac12\Phi'$, then on $C_c^\infty(\R)$,
+\begin{equation}\label{eq:A-DV}
+ A=D+iV.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Suppose $g_n\to g$ and $Ag_n\to h$ in $L^2$.  Since $\sqrt p$ is bounded,
+$\sqrt p\,g_n\to\sqrt p\,g$ and
+$D(\sqrt p\,g_n)=\sqrt p\,Ag_n\to\sqrt p\,h$ in $L^2$.  Closedness of
+$D$ on $H^1(\R)$ gives $g\in\Dom(A)$ and $Ag=h$.  Formula
+\eqref{eq:A-DV} is a direct product-rule calculation.
+\end{proof}
+
+\begin{theorem}[Explicit Moore--Penrose inverse]\label{thm:MP-inverse}
+The following identities hold:
+\begin{align}
+ A\BTheta&=P_0 &&\text{on }L^2(\R),
+ \label{eq:AB-P}\\
+ \BTheta A&=I &&\text{on }\Dom(A),
+ \label{eq:BA-I}\\
+ \BTheta\psi&=0.\label{eq:Bpsi-zero}
+\end{align}
+Consequently,
+\begin{equation}\label{eq:B-MP}
+ \boxed{\BTheta=A^\dagger,}
+\end{equation}
+$A$ is injective, $\Ran(A)=\psi^\perp$ is closed, and
+\begin{equation}\label{eq:A-lower}
+ \boxed{
+ \|Ag\|_2\geq
+ \sqrt{\frac{\pi d_*}{1+\Delta}}\,\|g\|_2,
+ \qquad g\in\Dom(A).}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $f\in L^2(\R)$, set
+\begin{equation}\label{eq:qf-def}
+ m=\int_{\R}\sqrt{p(y)}f(y)\dd y,
+ \qquad
+ q_f(x)=\int_{-\infty}^x\sqrt{p(y)}f(y)\dd y-F(x)m.
+\end{equation}
+Then $\sqrt p\,\BTheta f=iq_f$ and
+\begin{equation}\label{eq:qf-prime}
+ q_f'(x)=\sqrt{p(x)}(P_0f)(x).
+\end{equation}
+The Hilbert--Schmidt bound shows that $\BTheta f\in L^2$; hence
+$q_f\in L^2$.  Equation \eqref{eq:qf-prime} puts $q_f$ in $H^1$ and gives
+$A\BTheta f=P_0f$.
+
+Conversely, let $g\in\Dom(A)$ and put $u=\sqrt p\,g$.  Every $H^1(\R)$
+function has a continuous representative tending to zero at both endpoints.
+If $f=Ag$, then
+\begin{equation}\label{eq:Du-f}
+ \sqrt p\,f=Du=-iu'.
+\end{equation}
+Moreover, $\sqrt p\,f\in L^1$ by Cauchy--Schwarz.  Therefore
+\begin{equation}\label{eq:integrate-Du}
+ \int_{-\infty}^x\sqrt p\,f=-iu(x),
+ \qquad
+ \int_{\R}\sqrt p\,f=0.
+\end{equation}
+Substitution in \eqref{eq:B-intro} gives $\BTheta Ag=g$.  Taking
+$f=\psi$ in \eqref{eq:qf-def} gives $q_f=0$, hence
+$\BTheta\psi=0$.
+
+The three identities imply that $A$ is injective and has range exactly
+$\psi^\perp$, while $\BTheta$ vanishes on the orthogonal complement of the
+range.  These are the Moore--Penrose equations, proving
+\eqref{eq:B-MP}.  Finally,
+\[
+ \|g\|_2=\|\BTheta Ag\|_2
+ \leq\|\BTheta\|\,\|Ag\|_2
+ \leq\|\BTheta\|_{\HS}\,\|Ag\|_2,
+\]
+and \eqref{eq:A-lower} follows from \eqref{eq:theta-HS-bound}.
+\end{proof}
+
+\begin{corollary}[Witten-type factorization and index]
+\label{cor:Witten-factorization}
+Let $q=iA$ and define, on the natural block domain,
+\begin{equation}\label{eq:supercharge}
+ \mathcal Q=
+ \begin{pmatrix}0&q^*\\ q&0\end{pmatrix},
+ \qquad
+ \Gamma=
+ \begin{pmatrix}I&0\\0&-I\end{pmatrix}.
+\end{equation}
+Then $\mathcal Q$ is self-adjoint, $\Gamma\mathcal Q=-\mathcal Q\Gamma$, and
+\begin{equation}\label{eq:Witten-Hamiltonian}
+ \mathcal Q^2=
+ \begin{pmatrix}A^*A&0\\0&AA^*\end{pmatrix}.
+\end{equation}
+On $C_c^\infty(\R)$,
+\begin{align}
+ q&=\frac{d}{dx}-V,&q^*&=-\frac{d}{dx}-V,\notag\\
+ q^*q&=-\frac{d^2}{dx^2}+V^2+V',&
+ qq^*&=-\frac{d^2}{dx^2}+V^2-V'.
+ \label{eq:Witten-partners}
+\end{align}
+Moreover,
+\begin{equation}\label{eq:A-index}
+ \Ker(q)=\{0\},\qquad
+ \Ker(q^*)=\operatorname{span}\{\psi\},\qquad
+ \operatorname{ind}A=\operatorname{ind}q=-1.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The closed densely defined operator $q=iA$ produces the standard self-adjoint
+block supercharge in \eqref{eq:supercharge}; its square and grading relation
+are immediate.  Formula \eqref{eq:Witten-partners} follows from
+\eqref{eq:A-DV}.  By \cref{thm:MP-inverse}, $\Ker(A)=\{0\}$ and
+$\Ran(A)=\psi^\perp$ is closed.  Hence
+$\Ker(A^*)=\Ran(A)^\perp=\operatorname{span}\{\psi\}$, which proves
+\eqref{eq:A-index}.
+\end{proof}
+
+Up to an overall phase and the conventional interchange of partner sectors,
+\cref{eq:supercharge,eq:Witten-partners} are the one-dimensional Witten
+supersymmetric factorization with Witten function $-\Phi/2$ (equivalently,
+superpotential derivative $-V$)
+\cite{Witten1982}.  In this language $\psi=\sqrt p$ is the unique zero mode
+in one partner sector, while $\BTheta=A^\dagger$ is the bounded
+Moore--Penrose inverse of the first-order factor on $\psi^\perp$.  It is not a
+resolvent of either self-adjoint partner Hamiltonian, and supersymmetry alone
+does not imply that the nonnormal compact operator $\BTheta$ has real
+spectrum.
+
+\begin{remark}\label{rem:no-kernel-shortcut}
+The order of proof matters.  Injectivity of a closed operator does not imply a
+positive lower bound.  Here the valid chain is
+\begin{align*}
+ \text{explicit tail estimate}
+ &\Longrightarrow \BTheta\in\HS\\
+ &\Longrightarrow (A\BTheta=P_0,\ \BTheta A=I)\\
+ &\Longrightarrow |A|\geq\|\BTheta\|^{-1}I.
+\end{align*}
+\end{remark}
+
+\section{PT symmetry and the zero spectrum}
+
+Let parity $\mathsf P$ and conjugation $\mathsf T$ act by
+\begin{equation}\label{eq:PT-def}
+ (\mathsf Pf)(x)=f(-x),
+ \qquad
+ (\mathsf Tf)(x)=\overline{f(x)}.
+\end{equation}
+Because $p$ is even, $V$ in \eqref{eq:A-DV} is real and odd.
+
+\begin{proposition}[Symmetries]\label{prop:PT}
+On their natural domains,
+\begin{align}
+ \mathsf P A\mathsf P&=-A,
+ &\mathsf T A\mathsf T&=-A,
+ &(\mathsf P\mathsf T)A(\mathsf P\mathsf T)&=A,
+ \label{eq:A-PT}\\
+ \mathsf P\BTheta\mathsf P&=-\BTheta,
+ &(\mathsf P\mathsf T)\BTheta(\mathsf P\mathsf T)&=\BTheta.
+ \label{eq:B-PT}
+\end{align}
+Thus $\BTheta$ is parity-odd and PT-symmetric.
+\end{proposition}
+
+\begin{proof}
+The relations for $A=D+iV$ follow from
+$\mathsf PDP=-D$, $\mathsf T D\mathsf T=-D$, and the oddness of $V$.
+The relations for $\BTheta=A^\dagger$ follow by applying the same unitary and
+antiunitary symmetries to the Moore--Penrose equations.  They can also be read
+directly from \eqref{eq:whole-kernel} and $F(-x)=1-F(x)$.
+\end{proof}
+
+This is the standard antilinear symmetry setting of PT-symmetric quantum
+theory \cite{BenderBoettcher1998}.  The distinction between symmetry and
+spectral reality is essential: PT symmetry permits real eigenvalues but does
+not force them.  In the pseudo-Hermitian formulation
+\cite{Mostafazadeh2002,Mostafazadeh2002III}, one instead seeks a metric
+operator $G$ satisfying $G\BTheta=\BTheta^*G$.  If $G$ is bounded, positive,
+and boundedly invertible, then $G^{1/2}\BTheta G^{-1/2}$ is self-adjoint, so
+the spectrum is real.  Conversely, abstract metric reconstructions require
+additional diagonalizability and basis hypotheses; they cannot be imported
+here from PT symmetry alone.
+
+We now state the exact spectral consequence of the determinant formula.
+
+\begin{theorem}[Reciprocal zero spectrum]\label{thm:zero-spectrum}
+The operator $\BTheta$ is compact and
+\begin{equation}\label{eq:zero-spectrum}
+ \boxed{
+ \Spec(\BTheta)\setminus\{0\}
+ =\left\{-\frac1\alpha:\ \Xi(\alpha)=0\right\}.}
+\end{equation}
+Algebraic multiplicities agree: the order of a zero $\alpha$ of $\Xi$ equals
+the algebraic multiplicity of $-1/\alpha$ as an eigenvalue of $\BTheta$.
+Moreover,
+\begin{equation}\label{eq:RH-equivalence}
+ \boxed{
+ \mathrm{RH}
+ \quad\Longleftrightarrow\quad
+ \Spec(\BTheta)\setminus\{0\}\subset\R.}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Hilbert--Schmidt operators are compact.  For a compact operator $K$, the zeros
+of $\detTwo(I+zK)$ are precisely the points $z=-1/\lambda$, where
+$\lambda\neq0$ is an eigenvalue of $K$; the zero order is the algebraic
+multiplicity \cite[Chapter 9]{Simon2005}.  Apply this fact to
+\cref{cor:main-det}.  Finally, a nontrivial zeta zero
+$\rho=\beta+i\gamma$ corresponds to
+\begin{equation}\label{eq:alpha-rho}
+ \alpha=\gamma-i\left(\beta-\frac12\right),
+ \qquad
+ \rho=\frac12+i\alpha.
+\end{equation}
+Thus $\beta=1/2$ if and only if $\alpha$, and hence $-1/\alpha$, is real.
+\end{proof}
+
+The symmetry relations imply that each nonzero spectral point occurs in the
+quartet
+\begin{equation}\label{eq:spectral-quartet}
+ \lambda,\quad-\lambda,\quad\overline\lambda,
+ \quad-\overline\lambda,
+\end{equation}
+with collapses on the axes.  This is the operator form of the evenness,
+reality, and functional-equation symmetries of $\Xi$.
+
+The connection with the Theta boundary state can also be written directly.
+For $\alpha\in\C$, define
+\begin{equation}\label{eq:u-alpha}
+ u_\alpha(x)=e^{-i\alpha x}
+ \int_{-\infty}^xe^{i\alpha y}W(y)\dd y,
+ \qquad
+ g_\alpha=\frac{u_\alpha}{\sqrt W}.
+\end{equation}
+
+\begin{lemma}[Boundary-state domain lemma]\label{lem:boundary-domain}
+If $\Xi(\alpha)=0$, then $g_\alpha\in\Dom(A)$.  More precisely, there are
+constants $C_\alpha,R_\alpha>0$ such that
+\begin{equation}\label{eq:u-alpha-tail}
+ |u_\alpha(x)|\leq C_\alpha e^{-2|x|}W(x),
+ \qquad |x|\geq R_\alpha.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The zero condition and \cref{eq:fourier-xi} give the second representation
+\[
+ u_\alpha(x)=-e^{-i\alpha x}
+ \int_x^\infty e^{i\alpha y}W(y)\dd y.
+\]
+Use this formula as $x\to+\infty$ and the original formula as
+$x\to-\infty$.  After taking absolute values, the only additional factor
+relative to \eqref{eq:w1-tail-change} is
+$e^{|\Im\alpha|\,|y-x|}$.  Under the substitution
+$t=\pi e^{2|y|}$ it changes the power of $t$ by
+$|\Im\alpha|/2$.  The incomplete-Gamma estimate
+\eqref{eq:incomplete-gamma}, together with
+\eqref{eq:W-w1-comparison}, therefore gives \eqref{eq:u-alpha-tail}; the
+factor $e^{-2|x|}$ is the reciprocal of the leading scale
+$\pi e^{2|x|}$.  In particular,
+\[
+ \int_\R\frac{|u_\alpha(x)|^2}{W(x)}\dd x<\infty.
+\]
+Moreover,
+\begin{equation}\label{eq:u-alpha-ode}
+ Du_\alpha=-\alpha u_\alpha-iW.
+\end{equation}
+The same estimate shows that $u_\alpha,u_\alpha'\in L^2(\R)$ and that
+$W^{-1/2}Du_\alpha\in L^2(\R)$.  Since
+$\sqrt p\,g_\alpha=u_\alpha/\sqrt{c_0}$, these are exactly the two
+conditions in \eqref{eq:A-domain}.
+\end{proof}
+
+Equation \eqref{eq:u-alpha-ode}, followed by integration over $\R$, gives
+$\int_\R u_\alpha=-ic_0/\alpha$; here $\alpha\neq0$ because
+$\Xi(0)>0$.  It follows that
+\begin{equation}\label{eq:boundary-pencil}
+ (A+\alpha P_0)g_\alpha=0.
+\end{equation}
+Applying $\BTheta$ to \eqref{eq:boundary-pencil} and using
+\cref{eq:BA-I,eq:Bpsi-zero} then gives
+\begin{equation}\label{eq:boundary-eigenstate}
+ \BTheta g_\alpha=-\frac1\alpha g_\alpha.
+\end{equation}
+This is the first-order, rank-one form of the Theta boundary mechanism in
+\cite{Hedenmalm2026}; the determinant argument above additionally records all
+algebraic multiplicities without requiring a separate root-chain analysis.
+
+\section{Trace identities and structural consequences}
+
+The whole-line determinant theorem immediately extends
+\cref{cor:finite-cumulant}.
+
+\begin{theorem}[Whole-line trace--cumulant calculus]\label{thm:cumulants}
+Let $p$ be Volterra-admissible, and let $\kappa_n(p)$ be its cumulants.  Then,
+for every $n\geq2$,
+\begin{equation}\label{eq:whole-cumulants}
+ \boxed{
+ \tr(\Vp^n)=
+ \frac{(-1)^{n+1}i^n}{(n-1)!}\,\kappa_n(p).}
+\end{equation}
+\end{theorem}
+
+For the even Riemann density, all odd cumulants vanish.  In particular,
+\begin{equation}\label{eq:B2-variance}
+ \tr(\BTheta^2)
+ =\operatorname{Var}_p(X)
+ =-\frac{\Xi''(0)}{\Xi(0)}.
+\end{equation}
+The same identity follows directly from the kernel.  If $y<x$, then
+\[
+ b_p(x,y)b_p(y,x)=F(y)(1-F(x)),
+\]
+and integration over the two half-triangles gives the variance.  This is an
+independent normalization check: no extra factor $e^{az^2}$ can be inserted
+in \eqref{eq:main-det} without changing \eqref{eq:B2-variance}.
+
+There is also a useful conceptual separation.  The Volterra indicator in
+\eqref{eq:whole-kernel} retains order; the CDF term retains the scalar endpoint
+memory removed by centering; only the final regularized determinant becomes a
+scalar.  Thus the construction provides a general method for realizing an
+entire characteristic function as the scalar readout of an ordered compact
+channel.  The Riemann case is distinguished by the arithmetic Theta density,
+not by the abstract determinant mechanism alone.
+
+The construction is faithful modulo translation in a precise sense.  For two
+densities to which the finite-interval theorem (or its admissible whole-line
+extension) applies, equality of their modified determinant functions is
+equivalent to equality of their centered probability laws.  Indeed,
+\cref{thm:finite-det,rem:nonzero-mean} identify the determinants with the
+characteristic functions of $X-\mathbb E X$, and characteristic functions
+determine probability measures uniquely.  Thus probability-CDF centering
+defines a canonical operator encoding of a law modulo its first cumulant;
+\cref{thm:cumulants} recovers every higher cumulant as a trace.
+
+\section{Concluding remarks and the spectral-reality problem}
+
+The results above close five operator-theoretic points unconditionally:
+\begin{enumerate}[label=(\arabic*),leftmargin=2.2em]
+ \item the CDF correction is uniquely forced by the local projection and
+ endpoint requirements;
+ \item $\BTheta$ is a well-defined Hilbert--Schmidt operator on the full real
+ line, with an explicit bound;
+ \item its finite centered restrictions converge in Hilbert--Schmidt norm;
+ \item its regularized determinant is exactly $\Xi(z)/\Xi(0)$, including
+ normalization and algebraic multiplicity;
+ \item it is the Moore--Penrose inverse of a concrete closed first-order
+ Theta operator, admits a Witten-type supersymmetric completion of index
+ $-1$, and obeys exact PT and parity symmetries.
+\end{enumerate}
+
+None of these statements implies that the spectrum is real.  In the present
+language, the remaining RH problem is exactly the following.
+
+\begin{problem}[Theta spectral-reality problem]\label{prob:reality}
+Prove, using a property specific to the arithmetic density $W$, that every
+nonzero eigenvalue of $\BTheta$ is real.
+\end{problem}
+
+Self-adjointness of $\BTheta$ in the ambient $L^2$ inner product is false in
+general, and PT symmetry by itself is insufficient.  One possible direction
+is to seek a bounded, positive, invertible metric $G$ satisfying
+$G\BTheta=\BTheta^*G$, as in pseudo-Hermitian quantum mechanics
+\cite{Mostafazadeh2002,Mostafazadeh2002III}.  Such a metric would make
+$\BTheta$ boundedly similar to a self-adjoint compact operator and hence force
+spectral reality.  It is potentially stronger than RH alone: it would also
+exclude nontrivial Jordan chains and impose Riesz-basis control on the
+eigenvectors.  Its existence should therefore not be treated as a free
+consequence of PT symmetry or of the rank-one construction.  Another possible
+direction is to exploit additional total-positivity or variation-diminishing
+structure of the specific Theta kernel.  The present paper does not assume
+either property.
+
+The value of Problem~\ref{prob:reality} is that it is now separated from all
+regularization and closure issues.  Any proposed RH argument using this model
+must act on the explicit kernel \eqref{eq:whole-kernel} and prove spectral
+reality without defining the missing structure from the zeros themselves.
+
+\appendix
+
+\section{Classical derivation of the Riemann--Theta kernel}
+\label{sec:appendix-kernel}
+
+This appendix derives \eqref{eq:W-def} and \eqref{eq:fourier-xi} directly
+from the classical theta transformation and Mellin formula.  Put
+\begin{equation}\label{eq:appendix-theta-psi}
+ \vartheta(t)=\sum_{n\in\mathbb Z}e^{-\pi n^2t},
+ \qquad
+ \psi(t)=\frac{\vartheta(t)-1}{2}
+ =\sum_{n=1}^\infty e^{-\pi n^2t},
+ \qquad t>0.
+\end{equation}
+Poisson summation gives Jacobi's inversion formula
+\begin{equation}\label{eq:appendix-jacobi}
+ \vartheta(1/t)=t^{1/2}\vartheta(t).
+\end{equation}
+For $\Re s>1$, termwise integration gives the classical Mellin identity
+\begin{equation}\label{eq:appendix-mellin-zeta}
+ \pi^{-s/2}\Gamma(s/2)\zeta(s)
+ =\int_0^\infty \psi(t)t^{s/2}\frac{\dd t}{t}.
+\end{equation}
+
+Define
+\begin{align}
+ \omega(t)
+ &:=\frac12\bigl(2t^2\vartheta''(t)+3t\vartheta'(t)\bigr)\notag\\
+ &=\sum_{n=1}^\infty
+ \bigl(2\pi^2n^4t^2-3\pi n^2t\bigr)e^{-\pi n^2t}.
+ \label{eq:appendix-omega}
+\end{align}
+The differentiated theta series converges locally uniformly on $(0,\infty)$,
+so $\omega$ is smooth.  Differentiating \eqref{eq:appendix-jacobi} once and
+twice yields
+\begin{align}
+ \vartheta'(1/t)
+ &=-\frac12t^{3/2}\vartheta(t)-t^{5/2}\vartheta'(t),\notag\\
+ \vartheta''(1/t)
+ &=\frac34t^{5/2}\vartheta(t)+3t^{7/2}\vartheta'(t)
+   +t^{9/2}\vartheta''(t).
+ \label{eq:appendix-theta-derivatives}
+\end{align}
+Substitution in \eqref{eq:appendix-omega} gives the exact transformation law
+\begin{equation}\label{eq:appendix-omega-inversion}
+ \omega(1/t)=t^{1/2}\omega(t).
+\end{equation}
+
+Let $a=s/2$.  Since
+$\omega(t)=2t^2\psi''(t)+3t\psi'(t)$, two integrations by parts in
+\eqref{eq:appendix-mellin-zeta} give, initially for $\Re s>1$,
+\begin{align}
+ \int_0^\infty\omega(t)t^{a-1}\dd t
+ &=(1-2a)\int_0^\infty t^a\psi'(t)\dd t\notag\\
+ &=a(2a-1)\int_0^\infty\psi(t)t^{a-1}\dd t\notag\\
+ &=\frac12s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s)
+ =\xi(s).
+ \label{eq:appendix-xi-mellin}
+\end{align}
+The boundary terms vanish at infinity by exponential decay.  At the origin,
+\eqref{eq:appendix-jacobi} gives
+\[
+ \psi(t)=\frac12(t^{-1/2}-1)
+ +O\!\left(t^{-1/2}e^{-\pi/t}\right),
+ \qquad t\downarrow0,
+\]
+which also makes the boundary terms vanish when $\Re s>1$.
+Equation \eqref{eq:appendix-omega-inversion} shows that the left side of
+\eqref{eq:appendix-xi-mellin} converges locally uniformly for every
+$s\in\C$; hence \eqref{eq:appendix-xi-mellin} holds on $\C$ by analytic
+continuation.
+
+Finally define, for every $x\in\R$,
+\begin{equation}\label{eq:appendix-W-omega}
+ W(x)=2e^{x/2}\omega(e^{2x}).
+\end{equation}
+For $x\geq0$, inserting \eqref{eq:appendix-omega} into
+\eqref{eq:appendix-W-omega} is exactly the series \eqref{eq:W-def}.
+Moreover, \eqref{eq:appendix-omega-inversion} gives
+\[
+ W(-x)=2e^{-x/2}\omega(e^{-2x})
+ =2e^{x/2}\omega(e^{2x})=W(x),
+\]
+so the reflected definition in \eqref{eq:W-def} is the restriction of one
+smooth even function.  For $t\geq1$, every summand of
+\eqref{eq:appendix-omega} is positive because $2\pi n^2t-3>0$;
+\eqref{eq:appendix-omega-inversion} extends positivity to $0<t<1$.
+The same series gives double-exponential decay of $W(x)$ as $x\to+\infty$,
+and evenness gives it as $x\to-\infty$.  Thus $W$ has exponential moments of
+every order.  In \eqref{eq:appendix-xi-mellin}, set
+$s=\tfrac12+iz$ and substitute $t=e^{2x}$.  Then
+\begin{align*}
+ \Xi(z)
+ &=\int_0^\infty\omega(t)t^{(1/2+iz)/2}\frac{\dd t}{t}\\
+ &=\int_{-\infty}^{\infty}
+ 2e^{x/2}\omega(e^{2x})e^{izx}\dd x
+ =\int_{\R}W(x)e^{izx}\dd x,
+\end{align*}
+which proves \eqref{eq:fourier-xi} with the normalization used throughout.
+
+\section{Details of the Theta truncation bounds}\label{sec:appendix-tail}
+
+For completeness we record the two estimates used in
+\cref{thm:theta-admissible}.  From \eqref{eq:w1-def}, the substitution
+$t=\pi e^{2x}$ gives
+\begin{align}
+ \int_R^\infty w_1(x)\dd x
+ &=\pi^{-1/4}\int_{Q_R}^\infty
+ t^{1/4}(2t-3)e^{-t}\dd t\notag\\
+ &\leq\frac{2\pi^{-1/4}Q_R^{5/4}e^{-Q_R}}
+ {1-5/(4Q_R)}.
+ \label{eq:appendix-q-tail}
+\end{align}
+Together with $W\leq(1+\Delta)w_1$, this proves
+\eqref{eq:qR-bound}.
+
+For the reciprocal integral, $W\geq w_1$ gives
+\begin{align}
+ \int_{-R}^R\frac{\dd x}{p(x)}
+ &\leq2c_0\int_0^R\frac{\dd x}{w_1(x)}\notag\\
+ &=\frac{c_0\pi^{1/4}}2
+ \int_\pi^{Q_R}\frac{e^t}{t^{9/4}(2t-3)}\dd t\notag\\
+ &\leq\frac{c_0}{2\pi^2(2\pi-3)}e^{Q_R},
+ \label{eq:appendix-reciprocal}
+\end{align}
+which is \eqref{eq:reciprocal-bound}.  Substitution in
+\eqref{eq:interior-error} gives \eqref{eq:explicit-interior-bound}.  These
+fixed-constant inequalities are the analytic content behind the full-line
+closure; numerical tail fitting is not used.
+
+\section{Continuity of the regularized determinant}
+
+We recall the standard estimate that justifies the limiting passage.  For
+$S,T\in\HS$,
+\begin{equation}\label{eq:det2-continuity}
+ |\detTwo(I+S)-\detTwo(I+T)|
+ \leq \|S-T\|_{\HS}
+ \exp\!\left(C(1+\|S\|_{\HS}+\|T\|_{\HS})^2\right)
+\end{equation}
+for an absolute constant $C$; see \cite[Chapter 9]{Simon2005}.  On a compact
+$z$-set, apply this estimate to $S=z\Vp^{(R)}$ and $T=z\Vp$.  The norms remain
+bounded by \cref{prop:HS-truncation}, proving locally uniform convergence.
+
+\section{Code and reproducibility}
+
+The complete reproducibility bundle is supplied with this manuscript as the
+ancillary archive
+\texttt{btheta-volterra-fredholm-reproducibility.zip}.  It contains the
+\LaTeX{} source and bibliography, the verification program
+\texttt{verify\_btheta.py}, a pinned dependency file, and a README giving the
+exact commands.  The program performs two independent numerical regression
+tests: it checks the Fourier normalization in \cref{eq:fourier-xi} at high
+precision, and it applies midpoint Nystrom discretization to the
+finite-interval identity in \cref{thm:finite-det}; compare the general
+numerical framework in \cite{Bornemann2010}.  No external data are required.
+The source, verification program, and compiled manuscript are publicly
+available at
+\url{https://github.com/AlexxxxxLiu/btheta-volterra-fredholm}.
+The ancillary archive may also be distributed directly as supplementary
+material.  These computations are not used in any proof.  The analytic
+argument depends only on the displayed inequalities and standard trace-ideal
+continuity.
+
+\enlargethispage{4\baselineskip}
+\bibliographystyle{amsplain}
+\bibliography{references}
+
+\end{document}
