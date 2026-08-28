@@ -8,6 +8,7 @@
 \usepackage{enumitem}
 \usepackage{booktabs}
 \usepackage{xcolor}
+\usepackage{aliascnt}
 \usepackage[colorlinks=true,
   linkcolor=blue!55!black,
   citecolor=green!40!black,
@@ -16,19 +17,57 @@
   pdfauthor={Jingwei Liu},
   pdfsubject={Regularized Fredholm determinant and operator realization of the Riemann Xi-function},
   pdfkeywords={Riemann Xi function, Fredholm determinant, Volterra operator, Hilbert-Schmidt operator, Moore-Penrose inverse, PT symmetry}]{hyperref}
-\usepackage[nameinlink,noabbrev]{cleveref}
 
 \allowdisplaybreaks
 \numberwithin{equation}{section}
 
 \newtheorem{theorem}{Theorem}[section]
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{remark}[theorem]{Remark}
-\newtheorem{example}[theorem]{Example}
-\newtheorem{problem}[theorem]{Problem}
+
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+
+\newaliascnt{problem}{theorem}
+\newtheorem{problem}[problem]{Problem}
+\aliascntresetthe{problem}
+
+\usepackage[nameinlink,noabbrev]{cleveref}
+\crefname{theorem}{Theorem}{Theorems}
+\crefname{proposition}{Proposition}{Propositions}
+\crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{Definition}{Definitions}
+\crefname{remark}{Remark}{Remarks}
+\crefname{example}{Example}{Examples}
+\crefname{problem}{Problem}{Problems}
+\Crefname{theorem}{Theorem}{Theorems}
+\Crefname{proposition}{Proposition}{Propositions}
+\Crefname{lemma}{Lemma}{Lemmas}
+\Crefname{corollary}{Corollary}{Corollaries}
+\Crefname{definition}{Definition}{Definitions}
+\Crefname{remark}{Remark}{Remarks}
+\Crefname{example}{Example}{Examples}
+\Crefname{problem}{Problem}{Problems}
 
 \newcommand{\C}{\mathbb C}
 \newcommand{\R}{\mathbb R}
@@ -1137,9 +1176,10 @@ The construction is faithful modulo translation in a precise sense.  For two
 densities to which the finite-interval theorem (or its admissible whole-line
 extension) applies, equality of their modified determinant functions is
 equivalent to equality of their centered probability laws.  Indeed,
-\cref{thm:finite-det,rem:nonzero-mean} identify the determinants with the
-characteristic functions of $X-\mathbb E X$, and characteristic functions
-determine probability measures uniquely.  Thus probability-CDF centering
+\cref{thm:finite-det,thm:whole-line-det}, together with
+\cref{rem:nonzero-mean}, identify the determinants with the characteristic
+functions of $X-\mathbb E X$, and characteristic functions determine
+probability measures uniquely.  Thus probability-CDF centering
 defines a canonical operator encoding of a law modulo its first cumulant;
 \cref{thm:cumulants} recovers every higher cumulant as a trace.
 
